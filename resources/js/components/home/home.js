@@ -50,6 +50,7 @@ export default {
             console.log(this.dates)
         },
         save() {
+            console.log(this.dates)
             this.loading = true;
             axios.post('/events',{
                 event_name: this.event_name,
