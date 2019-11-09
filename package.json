@@ -23,5 +23,7 @@
         "vue-template-compiler": "^2.6.10",
         "vuetify": "^2.1.9"
     },
-    "dependencies": {}
+    "dependencies": {
+        "vue-axios": "^2.1.5"
+    }
 }

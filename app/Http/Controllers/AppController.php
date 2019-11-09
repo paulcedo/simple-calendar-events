@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
 {
@@ -24,5 +26,53 @@ class AppController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'event_name' => 'required|string',
+            'reserved_dates' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        if (is_array($request->reserved_dates) || is_object($request->reserved_dates)) {
+            foreach ($request->reserved_dates as $value) {
+                $event = new Event;
+
+                $event->event_name = $request->event_name;
+                $event->reserved_date = $value;
+
+                $event->save();
+            }
+        }
+
+        return response()->json(['status_code'=>200,'status_message'=>'success']);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getAll()
+    {
+        return response()->json(['data'=>Event::orderBy('reserved_date')->get()]);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getAllDates()
+    {
+        return response()->json(['data'=>Event::select('reserved_date')->get()]);
     }
 }
