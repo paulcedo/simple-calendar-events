@@ -66,6 +66,7 @@
                 </v-row>
             </v-container>
         </v-form>
+        <v-progress-linear :indeterminate="true" v-if="loading"></v-progress-linear>
         <v-simple-table>
             <template v-slot:default fluid>
             <thead>
@@ -74,7 +75,6 @@
                 <th class="text-left">Date</th>
                 </tr>
             </thead>
-            <v-progress-linear :indeterminate="true" v-if="loading"></v-progress-linear>
             <tbody>
                 <tr v-for="item in events" :key="item">
                     <td>{{ item.event_name }}</td>

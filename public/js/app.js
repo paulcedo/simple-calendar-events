@@ -1970,6 +1970,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     save: function save() {
       var _this3 = this;
 
+      console.log(this.dates);
       this.loading = true;
       axios.post('/events', {
         event_name: this.event_name,
@@ -38169,6 +38170,10 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _vm.loading
+        ? _c("v-progress-linear", { attrs: { indeterminate: true } })
+        : _vm._e(),
+      _vm._v(" "),
       _c("v-simple-table", {
         scopedSlots: _vm._u([
           {
@@ -38184,10 +38189,6 @@ var render = function() {
                     _c("th", { staticClass: "text-left" }, [_vm._v("Date")])
                   ])
                 ]),
-                _vm._v(" "),
-                _vm.loading
-                  ? _c("v-progress-linear", { attrs: { indeterminate: true } })
-                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -90705,7 +90706,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_axios__WEBPACK_IMPORTED_MODULE_5___default.a, axios__WEBPACK_IMPORTED_MODULE_4___default.a);
 window.axios = axios__WEBPACK_IMPORTED_MODULE_4___default.a;
-axios__WEBPACK_IMPORTED_MODULE_4___default.a.defaults.baseURL = "http://calendar-events.local/api/v1/";
+axios__WEBPACK_IMPORTED_MODULE_4___default.a.defaults.baseURL = "http://simple-calendar-events.local/api/v1/";
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {
@@ -90969,8 +90970,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\calendar-events\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\calendar-events\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\simple-calendar-events\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\simple-calendar-events\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

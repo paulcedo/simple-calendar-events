@@ -42,16 +42,27 @@ class AppController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        if (is_array($request->reserved_dates) || is_object($request->reserved_dates)) {
-            foreach ($request->reserved_dates as $value) {
-                $event = new Event;
-
-                $event->event_name = $request->event_name;
-                $event->reserved_date = $value;
-
-                $event->save();
+        if(count(Event::where('event_name',$request->event_name)->get())>=1){
+            // dd(is_array($request->reserved_dates) || is_object($request->reserved_dates));
+            // Event::where('event_name', $request->event_name)->updateOrCreate($r);
+            Event::where('event_name', $request->event_name)->delete();
+            foreach ((array)$request->reserved_dates as $value) {
+                Event::updateOrCreate([
+                    'event_name'=>$request->event_name,
+                    'reserved_date'=> $value
+                ]);
+            }
+        }else{
+            if (is_array($request->reserved_dates) || is_object($request->reserved_dates)) {
+                foreach ($request->reserved_dates as $value) {
+                    Event::create([
+                        'event_name' => $request->event_name,
+                        'reserved_date' => $value
+                    ]);
+                }
             }
         }
+
 
         return response()->json(['status_code'=>200,'status_message'=>'success']);
     }
