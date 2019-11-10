@@ -1,6 +1,16 @@
 <template>
     <v-container fluid>
-        <v-form v-model="valid">
+        <v-alert
+        text
+        dense
+        color="teal"
+        icon="mdi-clock-fast"
+        border="left"
+        v-model="alert"
+        >
+        {{responseMessage}}
+        </v-alert>
+        <v-form>
             <v-container>
                 <v-row>
                     <v-col
@@ -27,7 +37,6 @@
                         :return-value.sync="dates"
                         transition="scale-transition"
                         offset-y
-                        full-width
                         min-width="290px"
                     >
                         <template v-slot:activator="{ on }">

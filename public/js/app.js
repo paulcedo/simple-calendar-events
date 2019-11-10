@@ -1921,30 +1921,27 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       headers: [{
         text: 'Event Name',
         align: 'left',
-        sortable: false,
-        value: 'event'
+        sortable: false
       }, {
         text: 'Date',
         value: 'date'
       }],
-      date: new Date().toISOString().substr(0, 10),
       dates: [],
       menu: false,
       events: null,
       moment: moment,
       loading: false,
-      errMessage: '',
+      responseMessage: '',
       eventnameRules: [function (v) {
         return !!v || 'Event Name is required';
       }],
       event_name: '',
-      reserved_dates: []
+      reserved_dates: [],
+      alert: false
     };
   },
   created: function created() {
     this.fetchEvents();
-    this.fetchEventDates();
-    this.datesToArray();
   },
   methods: {
     fetchEvents: function fetchEvents() {
@@ -1954,37 +1951,25 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         _this.events = JSON.parse(JSON.stringify(response.data.data));
       });
     },
-    fetchEventDates: function fetchEventDates() {
+    save: function save() {
       var _this2 = this;
 
-      axios.get('/events/dates').then(function (response) {
-        _this2.reserved_dates = JSON.parse(JSON.stringify(response.data.data));
-      });
-    },
-    datesToArray: function datesToArray() {
-      this.reserved_dates.forEach(function (element) {
-        this.dates.push = element;
-      });
-      console.log(this.dates);
-    },
-    save: function save() {
-      var _this3 = this;
-
-      console.log(this.dates);
       this.loading = true;
       axios.post('/events', {
         event_name: this.event_name,
         reserved_dates: this.dates
       }).then(function (response) {
-        _this3.fetchEvents();
+        _this2.fetchEvents();
 
-        _this3.loading = false;
+        _this2.alert = true;
+        _this2.loading = false;
+        _this2.responseMessage = 'Dates successfully reserved.';
 
-        _this3.close();
+        _this2.close();
       })["catch"](function (error) {
-        _this3.alert = true;
-        _this3.errMessage = error.response.data.errors;
-        _this3.loading = false;
+        _this2.alert = true;
+        _this2.responseMessage = 'All fields are required';
+        _this2.loading = false;
       });
     }
   }
@@ -37970,16 +37955,28 @@ var render = function() {
     { attrs: { fluid: "" } },
     [
       _c(
-        "v-form",
+        "v-alert",
         {
+          attrs: {
+            text: "",
+            dense: "",
+            color: "teal",
+            icon: "mdi-clock-fast",
+            border: "left"
+          },
           model: {
-            value: _vm.valid,
+            value: _vm.alert,
             callback: function($$v) {
-              _vm.valid = $$v
+              _vm.alert = $$v
             },
-            expression: "valid"
+            expression: "alert"
           }
         },
+        [_vm._v("\n    " + _vm._s(_vm.responseMessage) + "\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-form",
         [
           _c(
             "v-container",
@@ -38023,7 +38020,6 @@ var render = function() {
                             "return-value": _vm.dates,
                             transition: "scale-transition",
                             "offset-y": "",
-                            "full-width": "",
                             "min-width": "290px"
                           },
                           on: {
